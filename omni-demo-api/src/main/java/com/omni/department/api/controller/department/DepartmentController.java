@@ -33,7 +33,7 @@ import com.omni.department.api.controller.department.dto.UpdateDepartmentDto;
 import com.omni.department.api.controller.department.dto.UpdatedDepartmentDto;
 import com.omni.department.api.domain.department.DepartmentEntity;
 import com.omni.department.api.domain.department.usecase.CreateDepartmentUseCase;
-import com.omni.department.api.domain.department.usecase.FindByIdUseCase;
+import com.omni.department.api.domain.department.usecase.FindDepartmentByIdUseCase;
 import com.omni.department.api.domain.department.usecase.ListDepartmentsOrderByCodeUseCase;
 import com.omni.department.api.domain.department.usecase.RemoveDepartmentUseCase;
 import com.omni.department.api.domain.department.usecase.UpdateDepartmentUseCase;
@@ -44,7 +44,7 @@ import com.omni.department.api.event.CreatedResourceEvent;
 public class DepartmentController implements DepartmentApi {
 	
 	@Autowired
-	private FindByIdUseCase findByIdService;
+	private FindDepartmentByIdUseCase findByIdService;
 	
 	@Autowired
 	private ListDepartmentsOrderByCodeUseCase ListDepartmentsOrderByCodeService;

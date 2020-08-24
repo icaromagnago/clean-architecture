@@ -29,7 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.omni.department.api.domain.department.Board;
 import com.omni.department.api.domain.department.DepartmentEntity;
 import com.omni.department.api.domain.department.usecase.CreateDepartmentUseCase;
-import com.omni.department.api.domain.department.usecase.FindByIdUseCase;
+import com.omni.department.api.domain.department.usecase.FindDepartmentByIdUseCase;
 import com.omni.department.api.domain.department.usecase.ListDepartmentsOrderByCodeUseCase;
 import com.omni.department.api.domain.department.usecase.RemoveDepartmentUseCase;
 import com.omni.department.api.domain.department.usecase.UpdateDepartmentUseCase;
@@ -45,7 +45,7 @@ class DepartmentControllerTest {
 	private ListDepartmentsOrderByCodeUseCase ListDepartmentsOrderByCodeService;
 	
 	@MockBean
-	private FindByIdUseCase findByIdService;
+	private FindDepartmentByIdUseCase findByIdService;
 	
 	@MockBean
 	private CreateDepartmentUseCase createDepartmentService;

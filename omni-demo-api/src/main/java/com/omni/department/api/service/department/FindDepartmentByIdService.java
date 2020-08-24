@@ -5,11 +5,11 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.omni.department.api.domain.department.DepartmentEntity;
-import com.omni.department.api.domain.department.usecase.FindByIdUseCase;
+import com.omni.department.api.domain.department.usecase.FindDepartmentByIdUseCase;
 import com.omni.department.api.repository.facade.DepartmentRepositoryFacade;
 
 @Service
-public class FindByIdService implements FindByIdUseCase {
+public class FindDepartmentByIdService implements FindDepartmentByIdUseCase {
 	
 	@Autowired
 	DepartmentRepositoryFacade departmentRepositoryFacade;
