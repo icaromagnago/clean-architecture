@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
-import com.omni.department.api.model.Board;
+import com.omni.department.api.domain.department.Board;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

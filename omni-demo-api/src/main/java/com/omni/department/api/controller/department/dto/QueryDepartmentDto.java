@@ -1,6 +1,6 @@
 package com.omni.department.api.controller.department.dto;
 
-import com.omni.department.api.model.Board;
+import com.omni.department.api.domain.department.Board;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -31,20 +31,32 @@ import com.omni.department.api.controller.department.dto.ListDepartmentDto;
 import com.omni.department.api.controller.department.dto.QueryDepartmentDto;
 import com.omni.department.api.controller.department.dto.UpdateDepartmentDto;
 import com.omni.department.api.controller.department.dto.UpdatedDepartmentDto;
+import com.omni.department.api.domain.department.DepartmentEntity;
+import com.omni.department.api.domain.department.usecase.CreateDepartmentUseCase;
+import com.omni.department.api.domain.department.usecase.FindByIdUseCase;
+import com.omni.department.api.domain.department.usecase.ListDepartmentsOrderByCodeUseCase;
+import com.omni.department.api.domain.department.usecase.RemoveDepartmentUseCase;
+import com.omni.department.api.domain.department.usecase.UpdateDepartmentUseCase;
 import com.omni.department.api.event.CreatedResourceEvent;
-import com.omni.department.api.model.DepartmentEntity;
-import com.omni.department.api.service.department.command.DepartmentCommandService;
-import com.omni.department.api.service.department.query.DepartmentQueryService;
 
 @RestController
 @RequestMapping("/departments")
 public class DepartmentController implements DepartmentApi {
 	
 	@Autowired
-	private DepartmentQueryService departmentQueryService;
+	private FindByIdUseCase findByIdService;
 	
 	@Autowired
-	private DepartmentCommandService departmentCommandService;
+	private ListDepartmentsOrderByCodeUseCase ListDepartmentsOrderByCodeService;
+	
+	@Autowired
+	private CreateDepartmentUseCase createDepartmentService;
+	
+	@Autowired
+	private UpdateDepartmentUseCase updateDepartmentService;
+	
+	@Autowired
+	private RemoveDepartmentUseCase removeDepartmentService;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -57,7 +69,7 @@ public class DepartmentController implements DepartmentApi {
 
 	@GetMapping
 	public ResponseEntity<BaseResponseDto> list() {
-		List<DepartmentEntity> departments = departmentQueryService.findAll();
+		List<DepartmentEntity> departments = ListDepartmentsOrderByCodeService.execute();
 		
 		List<ListDepartmentDto> departmentsDto = departments.stream()
 				.map(department -> modelMapper.map(department, ListDepartmentDto.class))
@@ -68,7 +80,7 @@ public class DepartmentController implements DepartmentApi {
 	
 	@PostMapping
 	public ResponseEntity<BaseResponseDto> create(@Valid @RequestBody CreateDepartmentDto createDepartmentDto, HttpServletResponse response) {
-		DepartmentEntity department = departmentCommandService.create(convertToEntity(createDepartmentDto));
+		DepartmentEntity department = createDepartmentService.execute(convertToEntity(createDepartmentDto));
 		
 		CreatedDepartmentDto departmentDto = modelMapper.map(department, CreatedDepartmentDto.class);
 		
@@ -80,7 +92,7 @@ public class DepartmentController implements DepartmentApi {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<BaseResponseDto> update(@PathVariable Integer id, @Valid @RequestBody UpdateDepartmentDto updateDepartmentDto) {
-		DepartmentEntity updatedDepartment = departmentCommandService.update(id, convertToEntity(updateDepartmentDto));
+		DepartmentEntity updatedDepartment = updateDepartmentService.execute(id, convertToEntity(updateDepartmentDto));
 		
 		UpdatedDepartmentDto updatedDepartmentDto = modelMapper.map(updatedDepartment, UpdatedDepartmentDto.class);
 		
@@ -89,7 +101,7 @@ public class DepartmentController implements DepartmentApi {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<BaseResponseDto> findById(@PathVariable Integer id) {
-		var department = departmentQueryService.findById(id);
+		var department = findByIdService.execute(id);
 		
 		var queryDepartmentDto = modelMapper.map(department, QueryDepartmentDto.class);
 		
@@ -99,7 +111,7 @@ public class DepartmentController implements DepartmentApi {
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<BaseResponseDto> remove(@PathVariable Integer id) {
-		departmentCommandService.remove(id);
+		removeDepartmentService.execute(id);
 		
 		return ResponseEntity.ok(new BaseResponseDto(HttpStatus.OK.getReasonPhrase(), List.of(getSuccessMessage())));
 	}

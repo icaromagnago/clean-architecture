@@ -7,17 +7,18 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.stereotype.Service;
 
-import com.omni.department.api.model.StateEntity;
+import com.omni.department.api.domain.state.ListStatesOrderByNameUseCase;
+import com.omni.department.api.domain.state.StateEntity;
 import com.omni.department.api.repository.StateRepository;
 
 @Service
-public class StateQueryServiceImpl implements StateQueryService {
+public class ListStatesOrderByNameService implements ListStatesOrderByNameUseCase {
 	
 	@Autowired
 	private StateRepository stateRepository;
 
 	@Override
-	public List<StateEntity> findAll() {
+	public List<StateEntity> execute() {
 		return stateRepository.findAll(Sort.by(Order.asc("name")));
 	}
 	

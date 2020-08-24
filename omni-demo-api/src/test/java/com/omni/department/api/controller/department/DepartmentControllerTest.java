@@ -26,11 +26,14 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.omni.department.api.model.Board;
-import com.omni.department.api.model.DepartmentEntity;
-import com.omni.department.api.model.StateEntity;
-import com.omni.department.api.service.department.command.DepartmentCommandService;
-import com.omni.department.api.service.department.query.DepartmentQueryService;
+import com.omni.department.api.domain.department.Board;
+import com.omni.department.api.domain.department.DepartmentEntity;
+import com.omni.department.api.domain.department.usecase.CreateDepartmentUseCase;
+import com.omni.department.api.domain.department.usecase.FindByIdUseCase;
+import com.omni.department.api.domain.department.usecase.ListDepartmentsOrderByCodeUseCase;
+import com.omni.department.api.domain.department.usecase.RemoveDepartmentUseCase;
+import com.omni.department.api.domain.department.usecase.UpdateDepartmentUseCase;
+import com.omni.department.api.domain.state.StateEntity;
 
 @WebMvcTest(DepartmentController.class)
 class DepartmentControllerTest {
@@ -39,17 +42,26 @@ class DepartmentControllerTest {
 	private MockMvc mockMvc;
 	
 	@MockBean
-	private DepartmentQueryService departmentQueryService;
+	private ListDepartmentsOrderByCodeUseCase ListDepartmentsOrderByCodeService;
 	
 	@MockBean
-	private DepartmentCommandService departmentCommandService;
+	private FindByIdUseCase findByIdService;
+	
+	@MockBean
+	private CreateDepartmentUseCase createDepartmentService;
+	
+	@MockBean
+	private UpdateDepartmentUseCase updateDepartmentService;
+	
+	@MockBean
+	private RemoveDepartmentUseCase removeDepartmentService;
 
 	@Test
 	void whenGetListAllDepartments_thenReturnOk() throws Exception {
 		var department1 = new DepartmentEntity(1, 1, "Compliance", "Av. Dois", "Salvador", Board.BUSINESS, new StateEntity(1, "Bahia"));
 		var department2 = new DepartmentEntity(2, 2, "Compras", "Av. Cinco", "Barueri", Board.BUSINESS, new StateEntity(5, "São Paulo"));
 		
-		when(departmentQueryService.findAll()).thenReturn(List.of(department1, department2));
+		when(ListDepartmentsOrderByCodeService.execute()).thenReturn(List.of(department1, department2));
 		
 		mockMvc.perform(get("/departments").contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk())
@@ -96,7 +108,7 @@ class DepartmentControllerTest {
 				+ "}";
 		
 		var department = new DepartmentEntity(1, 1, "Compliance", "Rua Meteoro", "Salvador", Board.BUSINESS, new StateEntity(1, "Bahia"));
-		when(departmentCommandService.create(Mockito.any())).thenReturn(department);
+		when(createDepartmentService.execute(Mockito.any())).thenReturn(department);
 		
 		mockMvc
 			.perform(post("/departments")
@@ -119,7 +131,7 @@ class DepartmentControllerTest {
 	
 	@Test
 	void whenFindByNonExistingId_thenReturnNotFound() throws Exception {
-		when(departmentQueryService.findById(Mockito.anyInt()))
+		when(findByIdService.execute(Mockito.anyInt()))
 			.thenThrow(new EmptyResultDataAccessException("", 1));
 		
 		mockMvc.perform(get("/departments/1")
@@ -133,7 +145,7 @@ class DepartmentControllerTest {
 	void whenFindByExistingId_thenReturnOk() throws Exception {
 		var department = new DepartmentEntity(1, 1, "Compliance", "Rua Meteoro", "Salvador", Board.BUSINESS, new StateEntity(1, "Bahia"));
 		
-		when(departmentQueryService.findById(Mockito.anyInt()))
+		when(findByIdService.execute(Mockito.anyInt()))
 			.thenReturn(department);
 		
 		mockMvc.perform(get("/departments/1")
@@ -163,7 +175,7 @@ class DepartmentControllerTest {
 				+ "\"state\": {\"id\": \"1\"}"
 				+ "}";
 		
-		when(departmentCommandService.update(Mockito.anyInt(), Mockito.any()))
+		when(updateDepartmentService.execute(Mockito.anyInt(), Mockito.any()))
 			.thenThrow(new EmptyResultDataAccessException(1));
 	
 		mockMvc.perform(put("/departments/1")
@@ -187,7 +199,7 @@ class DepartmentControllerTest {
 		
 		var department = new DepartmentEntity(1, 1, "Compliance", "Rua Nove de Julho", "Salvador", Board.BUSINESS, new StateEntity(1, "Bahia"));
 		
-		when(departmentCommandService.update(Mockito.anyInt(), Mockito.any()))
+		when(updateDepartmentService.execute(Mockito.anyInt(), Mockito.any()))
 			.thenReturn(department);
 	
 		mockMvc.perform(put("/departments/1")
@@ -209,7 +221,7 @@ class DepartmentControllerTest {
 	
 	@Test
 	void whenDeletingNonExistingId_thenReturnNotFound() throws Exception {
-		doThrow(new EmptyResultDataAccessException("", 1)).when(departmentCommandService).remove(Mockito.anyInt());
+		doThrow(new EmptyResultDataAccessException("", 1)).when(removeDepartmentService).execute(Mockito.anyInt());
 	
 		mockMvc.perform(delete("/departments/1")
 				.contentType(MediaType.APPLICATION_JSON))
@@ -220,7 +232,7 @@ class DepartmentControllerTest {
 	
 	@Test
 	void whenDeletingExistingId_thenReturnOk() throws Exception {
-		doNothing().when(departmentCommandService).remove(Mockito.anyInt());
+		doNothing().when(removeDepartmentService).execute(Mockito.anyInt());
 	
 		mockMvc.perform(delete("/departments/1")
 				.contentType(MediaType.APPLICATION_JSON))

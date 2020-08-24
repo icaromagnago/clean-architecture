@@ -1,4 +1,4 @@
-package com.omni.department.api.model;
+package com.omni.department.api.domain.department;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.omni.department.api.domain.state.StateEntity;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

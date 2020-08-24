@@ -1,4 +1,4 @@
-package com.omni.department.api.model;
+package com.omni.department.api.domain.department;
 
 public enum Board {
 	EIS ("E.I.S."),

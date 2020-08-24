@@ -19,8 +19,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.omni.department.api.model.StateEntity;
-import com.omni.department.api.service.state.query.StateQueryService;
+import com.omni.department.api.domain.state.ListStatesOrderByNameUseCase;
+import com.omni.department.api.domain.state.StateEntity;
 
 @WebMvcTest(StateController.class)
 class StateControllerTest {
@@ -29,7 +29,7 @@ class StateControllerTest {
 	private MockMvc mockMvc;
 	
 	@MockBean
-	private StateQueryService stateQueryService;
+	private ListStatesOrderByNameUseCase ListStatesOrderByNameService;
 	
 	@Test
 	void whenGetListAllStates_thenReturnOk() throws Exception {
@@ -37,7 +37,7 @@ class StateControllerTest {
 		StateEntity state1 = new StateEntity(1, "Rio de Janeiro");
 		StateEntity state2 = new StateEntity(2, "Bahia");
 		
-		when(stateQueryService.findAll()).thenReturn(List.of(state1, state2));
+		when(ListStatesOrderByNameService.execute()).thenReturn(List.of(state1, state2));
 		
 		mockMvc
 			.perform(get("/states")

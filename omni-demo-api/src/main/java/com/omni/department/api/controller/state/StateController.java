@@ -16,14 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.omni.department.api.controller.BaseResponseDto;
 import com.omni.department.api.controller.state.dto.StateQueryDto;
-import com.omni.department.api.service.state.query.StateQueryService;
+import com.omni.department.api.domain.state.ListStatesOrderByNameUseCase;
 
 @RestController
 @RequestMapping("/states")
 public class StateController implements StateApi {
 	
 	@Autowired
-	private StateQueryService stateQueryService;
+	private ListStatesOrderByNameUseCase listStatesOrderByNameService;
 	
 	@Autowired
 	private ModelMapper modelMapper;
@@ -34,7 +34,7 @@ public class StateController implements StateApi {
 	@GetMapping
 	public ResponseEntity<BaseResponseDto> list() {
 		
-		var states = stateQueryService.findAll();
+		var states = listStatesOrderByNameService.execute();
 		
 		List<StateQueryDto> statesDto = states.stream()
 				.map(state -> modelMapper.map(state, StateQueryDto.class))

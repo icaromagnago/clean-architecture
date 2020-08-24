@@ -1,4 +1,4 @@
-package com.omni.department.api.model;
+package com.omni.department.api.domain.state;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
