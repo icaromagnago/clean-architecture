@@ -16,5 +16,4 @@ public class OmniDemoApiApplication {
 	public ModelMapper modelMapper() {
 	    return new ModelMapper();
 	}
-
 }

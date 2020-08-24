@@ -20,7 +20,7 @@ import com.omni.department.api.service.state.query.StateQueryService;
 
 @RestController
 @RequestMapping("/states")
-public class StateController {
+public class StateController implements StateApi {
 	
 	@Autowired
 	private StateQueryService stateQueryService;

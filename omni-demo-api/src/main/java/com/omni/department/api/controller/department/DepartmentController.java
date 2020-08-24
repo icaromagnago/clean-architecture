@@ -38,7 +38,7 @@ import com.omni.department.api.service.department.query.DepartmentQueryService;
 
 @RestController
 @RequestMapping("/departments")
-public class DepartmentController {
+public class DepartmentController implements DepartmentApi {
 	
 	@Autowired
 	private DepartmentQueryService departmentQueryService;
