@@ -14,12 +14,19 @@ import lombok.Setter;
 @Getter
 public class BaseResponseDto {
 	
-	protected String status;
+	private String status;
 	
-	protected List<String> messages = new ArrayList<String>();
+	private List<String> messages = new ArrayList<String>();
+	
+	private Object result;
 	
 	public BaseResponseDto(String status) {
 		this.status = status;
+	}
+	
+	public BaseResponseDto(String status, List<String> messages) {
+		this.status = status;
+		this.messages = messages;
 	}
 	
 	public void addMessage(String message) {

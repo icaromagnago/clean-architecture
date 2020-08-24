@@ -7,4 +7,6 @@ import com.omni.department.api.model.DepartmentEntity;
 public interface DepartmentQueryService {
 	
 	List<DepartmentEntity> findAll();
+	
+	DepartmentEntity findById(Integer id);
 }

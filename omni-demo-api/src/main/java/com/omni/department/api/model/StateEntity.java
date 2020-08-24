@@ -27,7 +27,8 @@ public class StateEntity {
 	
 	private String uf;
 	
-	public StateEntity(Integer id) {
+	public StateEntity(Integer id, String name) {
 		this.id = id;
+		this.name = name;
 	}
 }

@@ -11,7 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-public class CreateDepartmentDto {
+public class UpdateDepartmentDto {
 	
 	@NotNull(message = "code may not be null")
 	@Positive(message = "code must be a positive number")

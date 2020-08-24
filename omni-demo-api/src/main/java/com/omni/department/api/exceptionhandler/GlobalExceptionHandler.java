@@ -1,6 +1,7 @@
 package com.omni.department.api.exceptionhandler;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +23,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 		
-		var message = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
+		var message = Optional.ofNullable(ex.getCause()).orElse(ex).toString();
 		BaseResponseDto baseResponseDto = new BaseResponseDto(status.getReasonPhrase(), List.of(message));
 		
 		return handleExceptionInternal(ex, baseResponseDto, headers, HttpStatus.BAD_REQUEST, request);

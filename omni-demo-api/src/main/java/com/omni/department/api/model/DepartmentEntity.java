@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,7 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
+@AllArgsConstructor
 public class DepartmentEntity {
 	
 	@Id
@@ -41,15 +43,5 @@ public class DepartmentEntity {
 	@ManyToOne
 	@JoinColumn(name = "state_id")
 	private StateEntity state;
-
-	public DepartmentEntity(Integer code, String name, String local, String city, Board board, StateEntity state) {
-		super();
-		this.code = code;
-		this.name = name;
-		this.local = local;
-		this.city = city;
-		this.board = board;
-		this.state = state;
-	}
 
 }

@@ -4,11 +4,17 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.omni.department.api.controller.BaseResponseDto;
 import com.omni.department.api.controller.state.dto.StateQueryDto;
 import com.omni.department.api.service.state.query.StateQueryService;
 
@@ -19,16 +25,26 @@ public class StateController {
 	@Autowired
 	private StateQueryService stateQueryService;
 	
+	@Autowired
+	private ModelMapper modelMapper;
+	
+	@Autowired
+	private MessageSource messageSource;
+	
 	@GetMapping
-	public List<StateQueryDto> list() {
+	public ResponseEntity<BaseResponseDto> list() {
 		
 		var states = stateQueryService.findAll();
 		
 		List<StateQueryDto> statesDto = states.stream()
-				.map(state -> new StateQueryDto(state.getId(), state.getName()))
+				.map(state -> modelMapper.map(state, StateQueryDto.class))
 				.collect(toList());
 		
-		return statesDto;
+		return ResponseEntity.ok(new BaseResponseDto(HttpStatus.OK.getReasonPhrase(), List.of(getSuccessMessage()), statesDto));
+	}
+	
+	private String getSuccessMessage() {
+		return messageSource.getMessage("success.message", null, LocaleContextHolder.getLocale());
 	}
 
 }

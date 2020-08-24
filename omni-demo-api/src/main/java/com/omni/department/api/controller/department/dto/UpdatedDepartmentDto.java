@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreatedDepartmentDto {
+public class UpdatedDepartmentDto {
 	
 	private Integer id;
 	

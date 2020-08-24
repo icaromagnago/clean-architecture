@@ -7,4 +7,6 @@ public interface DepartmentCommandService {
 	DepartmentEntity create(DepartmentEntity department);
 	
 	void remove(Integer id);
+
+	DepartmentEntity update(Integer id, DepartmentEntity department);
 }
