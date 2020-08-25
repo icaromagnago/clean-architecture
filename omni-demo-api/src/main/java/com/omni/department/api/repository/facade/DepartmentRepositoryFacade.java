@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.stereotype.Service;
 
 import com.omni.department.api.domain.department.DepartmentEntity;
 import com.omni.department.api.repository.DepartmentRepository;
 
+@Service
 public class DepartmentRepositoryFacade {
 	
 	@Autowired
