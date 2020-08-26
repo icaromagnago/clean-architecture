@@ -33,7 +33,6 @@ public class StateController implements StateApi {
 	
 	@GetMapping
 	public ResponseEntity<BaseResponseDto> list() {
-		
 		var states = listStatesOrderByNameService.execute();
 		
 		List<StateQueryDto> statesDto = states.stream()

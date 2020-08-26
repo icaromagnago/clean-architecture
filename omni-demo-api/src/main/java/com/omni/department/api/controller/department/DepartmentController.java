@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.omni.department.api.controller.BaseResponseDto;
@@ -109,7 +108,6 @@ public class DepartmentController implements DepartmentApi {
 	}
 	
 	@DeleteMapping("/{id}")
-	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<BaseResponseDto> remove(@PathVariable Integer id) {
 		removeDepartmentService.execute(id);
 		
