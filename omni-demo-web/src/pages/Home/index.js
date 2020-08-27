@@ -1,75 +1,60 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { FaTrash, FaPencilAlt } from 'react-icons/fa';
+import { Formik, Form } from 'formik';
+import * as Yup from 'yup';
 
 import api from '../../services/api';
 
 import Container from '../../components/Container';
+import Input from '../../components/Input';
+import InputRadio from '../../components/InputRadio';
+import Select from '../../components/Select';
 
-import { Form, InputContainer, BoardContainer, SubmitButton, TableContainer, Table } from './styles';
+import {
+  FormContainer,
+  InputContainer,
+  BoardContainer,
+  SubmitButton,
+  TableContainer,
+  Table,
+} from './styles';
+
+const schema = Yup.object().shape({
+  code: Yup.number()
+    .positive('Informe um código positivo')
+    .required('O código é obrigatório'),
+  name: Yup.string().required('O nome é obrigatório'),
+  local: Yup.string().required('O local é obrigatório'),
+  city: Yup.string().required('A cidade é obrigatório'),
+  state: Yup.object().shape({
+    id: Yup.string().required('O Estado é obrigatório'),
+  }),
+});
 
 function Home() {
-
-  const [code, setCode] = useState('');
-  const [name, setName] = useState('');
-  const [local, setLocal] = useState('');
-  const [city, setCity] = useState('');
-  const [state, setState] = useState('');
-  const [states, setStates] = useState([
-    {id: 0, name: "Estado"}
-  ]);
-  const [selectedBoard, setSelectedBoard] = useState('');
+  const [states, setStates] = useState([]);
   const [departments, setDepartments] = useState([]);
 
   useEffect(() => {
     async function loadStates() {
       const response = await api.get('states');
+      setStates((s) => [...s, ...response.data.result]);
+    }
 
-      console.log(response.data.result);
-      setStates(states => [...states, ...response.data.result]);
-
+    async function loadDepartments() {
       const responseDepartments = await api.get('departments');
       setDepartments(responseDepartments.data.result);
     }
 
     loadStates();
+    loadDepartments();
   }, []);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  async function handleDelete(id) {
+    const response = await api.delete(`/departments/${id}`);
 
-    const department = {
-      code,
-      name,
-      local,
-      city,
-      board: selectedBoard,
-      state: {
-        id: state
-      }
-    }
-
-    try {
-      const response = await api.post('departments', department);
-      setCode('');
-      setName('');
-      setLocal('');
-      setCity('');
-      setSelectedBoard('');
-      setState('0');
-
-      toast.success('Departamento cadastrado com sucesso!');
-    } catch(erro) {
-
-    }
-
-    console.log(`${code} ${name} ${local} ${city} ${state} ${selectedBoard}`);
-  }
-
-  function handleDelete(id) {
-    const response = api.delete(`/departments/${id}`);
-
-    setDepartments(departments.filter(department => department.id !== id));
+    setDepartments(departments.filter((department) => department.id !== id));
 
     toast.success('Departamento removido com sucesso!');
   }
@@ -77,110 +62,96 @@ function Home() {
   return (
     <>
       <Container>
-        <Form onSubmit={handleSubmit}>
-          <InputContainer>
-            <input 
-              type="text"
-              placeholder="Código" 
-              value={code} 
-              onChange={e => setCode(e.target.value)} />
+        <Formik
+          initialValues={{
+            code: '',
+            name: '',
+            local: '',
+            city: '',
+            board: 'EIS',
+            state: { id: '' },
+          }}
+          validationSchema={schema}
+          onSubmit={async (values, { setSubmitting, resetForm }) => {
+            try {
+              const response = await api.post('departments', values);
 
-            <input 
-              type="text"
-              placeholder="Nome" 
-              value={name} 
-              onChange={e => setName(e.target.value)} />
+              if (response.status === 201) {
+                const { id, code, name } = response.data.result;
 
-            <input 
-              type="text"
-              placeholder="Local" 
-              value={local} 
-              onChange={e => setLocal(e.target.value)} />
+                const newDepartments = [...departments, { id, code, name }];
+                newDepartments.sort((dep1, dep2) => dep1.code - dep2.code);
 
-            <input 
-              type="text"
-              placeholder="Cidade" 
-              value={city}
-              onChange={e => setCity(e.target.value)} />
+                setDepartments(newDepartments);
+              }
 
-            <select value={state} onChange={e => setState(e.target.value)}>
-              {states.map(state => <option key={state.id} value={state.id}>{state.name}</option>)}
-            </select>
-          </InputContainer>
+              setSubmitting(false);
 
-          <hr />
+              toast.success('Departamento cadastrado com sucesso!');
 
-          <h3>Diretoria</h3>
-          <BoardContainer>
-            <div>
-              <input
-                id="eis"
-                name="board"
-                type="radio"
-                value="EIS" 
-                checked={selectedBoard === 'EIS'} 
-                onChange={e => setSelectedBoard(e.target.value)} />
-              
-              <label htmlFor="eis">E.I.S</label>
-            </div>
+              resetForm({ values: '' });
+            } catch (err) {
+              console.log(err);
+            }
+          }}
+        >
+          <Form>
+            <FormContainer>
+              <InputContainer>
+                <Input name="code" placeholder="Código" />
+                <Input name="name" placeholder="Nome" />
+                <Input name="local" placeholder="Local" />
+                <Input name="city" placeholder="Cidade" />
+                <Select name="state.id">
+                  <option value="">Estado</option>
+                  {states.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.name}
+                    </option>
+                  ))}
+                </Select>
+              </InputContainer>
+              <hr />
+              <h3>Diretoria</h3>
 
-            <div>
-              <input
-                id="recovery"
-                name="board"
-                type="radio"
-                value="RECOVERY" 
-                checked={selectedBoard === 'RECOVERY'} 
-                onChange={e => setSelectedBoard(e.target.value)} />
-              
-              <label htmlFor="recovery">Recuperação</label>
-            </div>
-
-            <div>
-              <input
-                id="business"
-                name="board"
-                type="radio"
-                value="BUSINESS" 
-                checked={selectedBoard === 'BUSINESS'} 
-                onChange={e => setSelectedBoard(e.target.value)} />
-              
-              <label htmlFor="business">Negócios</label>
-            </div>
-              
-          </BoardContainer>
-
-          <SubmitButton>Gravar</SubmitButton>
-        </Form>
+              <BoardContainer>
+                <InputRadio name="board" label="E.I.S" value="EIS" />
+                <InputRadio name="board" label="Recuperação" value="RECOVERY" />
+                <InputRadio name="board" label="Negócios" value="BUSINESS" />
+              </BoardContainer>
+              <SubmitButton>Gravar</SubmitButton>
+            </FormContainer>
+          </Form>
+        </Formik>
       </Container>
 
       <TableContainer>
-          <Table>
-            <thead>
-              <tr>
-                <th>Código</th>
-                <th>Nome</th>
-                <th></th>
+        <Table>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nome</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {departments.map((department) => (
+              <tr key={department.id}>
+                <td>{department.code}</td>
+                <td>{department.name}</td>
+                <td>
+                  <span>
+                    <FaTrash onClick={() => handleDelete(department.id)} />
+                    <FaPencilAlt />
+                  </span>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {departments.map(department => (
-                <tr key={department.id}>
-                  <td>{department.code}</td>
-                  <td>{department.name}</td>
-                  <td>
-                    <span>
-                      <FaTrash onClick={() => handleDelete(department.id)} />
-                      <FaPencilAlt />
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+            ))}
+          </tbody>
+        </Table>
       </TableContainer>
     </>
-  )
+  );
 }
 
 export default Home;

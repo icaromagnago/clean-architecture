@@ -1,6 +1,23 @@
 import styled from 'styled-components';
 
-export const Form = styled.form`
+export const FormContainer = styled.div`
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+
+  hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  h3 {
+    margin-top: 15px;
+  }
+`;
+
+export const Form2 = styled.form`
   margin-top: 30px;
   display: flex;
   flex-direction: column;
@@ -14,7 +31,7 @@ export const Form = styled.form`
     background: none;
   }
 
-  hr { 
+  hr {
     border: 0;
     height: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
@@ -32,13 +49,13 @@ export const InputContainer = styled.div`
   grid-gap: 15px;
   margin-bottom: 15px;
 
-  input {
+  /* input {
     flex: 1;
     border: 1px solid #eee;
     padding: 10px 15px;
     border-radius: 4px;
     font-size: 16px;
-  }
+  } */
 `;
 
 export const BoardContainer = styled.div`
@@ -48,17 +65,21 @@ export const BoardContainer = styled.div`
 
   div {
     display: flex;
-    align-items: center;
-  }
 
-  input {
-    margin-right: 10px;
-    cursor: pointer;
+    label {
+      display: flex;
+      align-items: center;
+
+      input {
+        margin-right: 10px;
+        cursor: pointer;
+      }
+    }
   }
 `;
 
-export const SubmitButton = styled.button.attrs(props => ({
-    type: 'submit'
+export const SubmitButton = styled.button.attrs((props) => ({
+  type: 'submit',
 }))`
   background: #007bff;
   border: 0;
@@ -72,7 +93,6 @@ export const SubmitButton = styled.button.attrs(props => ({
   justify-content: center;
   align-items: center;
   align-self: flex-end;
-
 `;
 
 export const TableContainer = styled.div`
