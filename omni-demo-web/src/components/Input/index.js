@@ -7,8 +7,6 @@ const Input = ({ ...props }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [field, meta] = useField(props);
 
-  console.log(meta.error);
-
   return (
     <Container hasError={!!meta.touched && !!meta.error} isFocused={isFocused}>
       <input

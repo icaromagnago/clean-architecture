@@ -8,7 +8,6 @@ const Input = ({ ...props }) => {
   return (
     <Container hasError={!!meta.touched && !!meta.error}>
       <select {...field} {...props} />
-      {/* {meta.touched && meta.error ? <span>{meta.error}</span> : null} */}
     </Container>
   );
 };

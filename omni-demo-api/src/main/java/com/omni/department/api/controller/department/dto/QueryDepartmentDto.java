@@ -11,8 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class QueryDepartmentDto {
 	
-	private Integer id;
-	
 	private Integer code;
 	
 	private String name;

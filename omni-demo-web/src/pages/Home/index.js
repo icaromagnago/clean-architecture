@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaTrash, FaPencilAlt } from 'react-icons/fa';
 import { Formik, Form } from 'formik';
@@ -54,9 +55,10 @@ function Home() {
   async function handleDelete(id) {
     const response = await api.delete(`/departments/${id}`);
 
-    setDepartments(departments.filter((department) => department.id !== id));
-
-    toast.success('Departamento removido com sucesso!');
+    if (response.status === 200) {
+      toast.success('Departamento removido com sucesso!');
+      setDepartments(departments.filter((department) => department.id !== id));
+    }
   }
 
   return (
@@ -142,7 +144,9 @@ function Home() {
                 <td>
                   <span>
                     <FaTrash onClick={() => handleDelete(department.id)} />
-                    <FaPencilAlt />
+                    <Link to={`/edit/${department.id}`}>
+                      <FaPencilAlt color="#000" />
+                    </Link>
                   </span>
                 </td>
               </tr>
