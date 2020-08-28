@@ -1,5 +1,0 @@
-com/demo/omni/state/usecase/GetAllStatesUseCase.class
-com/demo/omni/state/ports/StateRepositoryService.class
-com/demo/omni/state/State.class
-com/demo/omni/App.class
-com/demo/omni/state/usecase/GetAllStatesUseCaseImpl.class
