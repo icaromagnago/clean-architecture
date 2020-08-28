@@ -12,8 +12,9 @@ export const FormContainer = styled.div`
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  h3 {
-    margin-top: 15px;
+  button {
+    width: 100px;
+    align-self: flex-end;
   }
 `;
 
@@ -66,35 +67,14 @@ export const TableContainer = styled.div`
   padding: 30px;
   margin: 0 auto 20px;
   background: #fff;
-`;
 
-export const Table = styled.table`
-  border-spacing: 0;
-  border-collapse: collapse;
-  width: 100%;
-
-  th {
-    color: #fff;
-    background: #000;
-    padding: 10px;
-    font-weight: bold;
-    line-height: 1.5rem;
-    text-align: left;
-    font-size: 16px;
-  }
-
-  td {
-    line-height: 2;
-    padding: 5px 10px;
-
+  table {
     span {
-      display: flex;
-      justify-content: space-evenly;
-
       svg {
         height: 16px;
         width: 16px;
         cursor: pointer;
+        margin-right: 10px;
       }
     }
   }

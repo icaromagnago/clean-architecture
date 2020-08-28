@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { FaTrash, FaPencilAlt } from 'react-icons/fa';
 import { Formik, Form } from 'formik';
+import { Modal, Button, Table } from 'react-bootstrap';
 import * as Yup from 'yup';
 
 import api from '../../services/api';
@@ -18,7 +19,6 @@ import {
   BoardContainer,
   SubmitButton,
   TableContainer,
-  Table,
 } from './styles';
 
 const schema = Yup.object().shape({
@@ -34,8 +34,13 @@ const schema = Yup.object().shape({
 });
 
 function Home() {
+  const [show, setShow] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [states, setStates] = useState([]);
   const [departments, setDepartments] = useState([]);
+
+  const [selectedDepartment, setSelectedDepartment] = useState({});
 
   useEffect(() => {
     async function loadStates() {
@@ -52,13 +57,29 @@ function Home() {
     loadDepartments();
   }, []);
 
-  async function handleDelete(id) {
-    const response = await api.delete(`/departments/${id}`);
+  const handleClose = () => {
+    setShow(false);
+    setSelectedDepartment({});
+  };
+
+  async function handleDelete() {
+    const response = await api.delete(`/departments/${selectedDepartment.id}`);
 
     if (response.status === 200) {
       toast.success('Departamento removido com sucesso!');
-      setDepartments(departments.filter((department) => department.id !== id));
+      setDepartments(
+        departments.filter(
+          (department) => department.id !== selectedDepartment.id
+        )
+      );
     }
+
+    handleClose();
+  }
+
+  function handleCofirmDelete(department) {
+    setSelectedDepartment(department);
+    setShow(true);
   }
 
   return (
@@ -76,6 +97,8 @@ function Home() {
           validationSchema={schema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             try {
+              setIsLoading(true);
+
               const response = await api.post('departments', values);
 
               if (response.status === 201) {
@@ -92,8 +115,9 @@ function Home() {
               toast.success('Departamento cadastrado com sucesso!');
 
               resetForm({ values: '' });
+              setIsLoading(false);
             } catch (err) {
-              console.log(err);
+              setIsLoading(false);
             }
           }}
         >
@@ -114,21 +138,25 @@ function Home() {
                 </Select>
               </InputContainer>
               <hr />
-              <h3>Diretoria</h3>
+              <h6>
+                <strong>Diretoria</strong>
+              </h6>
 
               <BoardContainer>
                 <InputRadio name="board" label="E.I.S" value="EIS" />
                 <InputRadio name="board" label="Recuperação" value="RECOVERY" />
                 <InputRadio name="board" label="Negócios" value="BUSINESS" />
               </BoardContainer>
-              <SubmitButton>Gravar</SubmitButton>
+              <Button size="sm" type="submit" disabled={isLoading}>
+                {isLoading ? 'Gravando...' : 'Gravar'}
+              </Button>
             </FormContainer>
           </Form>
         </Formik>
       </Container>
 
       <TableContainer>
-        <Table>
+        <Table striped bordered hover>
           <thead>
             <tr>
               <th>Código</th>
@@ -143,7 +171,7 @@ function Home() {
                 <td>{department.name}</td>
                 <td>
                   <span>
-                    <FaTrash onClick={() => handleDelete(department.id)} />
+                    <FaTrash onClick={() => handleCofirmDelete(department)} />
                     <Link to={`/edit/${department.id}`}>
                       <FaPencilAlt color="#000" />
                     </Link>
@@ -154,6 +182,24 @@ function Home() {
           </tbody>
         </Table>
       </TableContainer>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Exclusão de Departamento</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Tem certeza que deseja excluir o departamento{' '}
+          {selectedDepartment.name}?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Não
+          </Button>
+          <Button variant="danger" onClick={handleDelete}>
+            Sim
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
