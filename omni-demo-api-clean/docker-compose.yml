@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+
+        postgresql: 
+          image: postgres
+          ports:
+                  - "5432:5432"
+          environment:
+                  POSTGRES_DB: omni-demo
+                  POSTGRES_USER: postgres
+                  POSTGRES_PASSWORD: docker
+          networks:
+                  - postgres-network
+
+        omni-demo-api:
+          image: omni/omni-demo-api
+          container_name: omni-demo-api
+          restart: always
+          ports:
+                - 8080:8080
+          depends_on:
+                - postgresql 
+          networks:
+                  - omni-api-network
+                  - postgres-network
+networks:
+        omni-api-network:
+                driver: bridge
+        postgres-network:
+                driver: bridge
