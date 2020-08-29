@@ -110,7 +110,7 @@ public class DepartmentControllerImpl implements DepartmentController {
 	
 	@Override
 	@PutMapping("/{id}")
-	public ResponseEntity<BaseResponseDto> update(@PathVariable Integer id, @RequestBody DepartmentInputDto updateDepartmentDto) throws DepartmentNotFoundException, DepartmentCodeAlreadyExistsException {
+	public ResponseEntity<BaseResponseDto> update(@PathVariable Integer id, @Valid @RequestBody DepartmentInputDto updateDepartmentDto) throws DepartmentNotFoundException, DepartmentCodeAlreadyExistsException {
 		
 		var command = modelMapper.map(updateDepartmentDto, UpdateDepartmentCommand.class);
 		var departmentDto = updateDepartmentUseCase.execute(id, command);

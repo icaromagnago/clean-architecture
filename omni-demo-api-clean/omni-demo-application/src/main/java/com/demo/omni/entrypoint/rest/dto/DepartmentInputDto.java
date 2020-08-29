@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Value;
 
-@ApiModel(value = "Dto for create/update a department")
+@ApiModel(value = "Dto for create/update a department", description = "")
 @Value
 public class DepartmentInputDto {
 	
@@ -36,11 +36,11 @@ public class DepartmentInputDto {
 	@Size(max = 50, message = "max lenght of city is {max}")
 	private String city;
 	
-	@ApiModelProperty(position = 4, value = "Department's board", allowableValues = "BUSINESS, EIS, RECOVERY")
+	@ApiModelProperty(position = 4, value = "Department's board", allowableValues = "BUSINESS, EIS, RECOVERY", example = "BUSINESS")
 	@NotNull(message = "board may not be null")
 	private String board;
 
-	@ApiModelProperty(position = 5, value = "Department's state")
+	@ApiModelProperty(position = 5, value = "Department's state", example = "state")
 	@NotNull(message = "state may not be null")
 	@Valid
 	private StateDto state;

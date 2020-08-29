@@ -45,7 +45,7 @@ public interface DepartmentController {
 		@ApiResponse(code = 201, response = BaseResponseDto.class, message = "Process executed successfully"),
 		@ApiResponse(code = 422, response = BaseResponseDto.class, message = "Department's code already exists")
 	})
-	ResponseEntity<BaseResponseDto> create(@ApiParam("Department to be created") @Valid @RequestBody DepartmentInputDto createDepartmentDto, 
+	ResponseEntity<BaseResponseDto> create(@ApiParam(value = "Department to be created") @Valid @RequestBody DepartmentInputDto departmentInputDto, 
 			HttpServletResponse response) throws DepartmentCodeAlreadyExistsException;
 	
 	@ApiOperation("Updates one department")
@@ -54,8 +54,9 @@ public interface DepartmentController {
 		@ApiResponse(code = 404, response = BaseResponseDto.class, message = "Not found"),
 		@ApiResponse(code = 422, response = BaseResponseDto.class, message = "Department's code already exists")
 	})
-	ResponseEntity<BaseResponseDto> update(@ApiParam("Department's id to be updated") @PathVariable Integer id, 
-			@ApiParam("Department to be updated") @RequestBody DepartmentInputDto updateDepartmentDto) 
+	ResponseEntity<BaseResponseDto> update(
+			@ApiParam(value = "Department's id to be updated", required = true, example = "88") @PathVariable Integer id, 
+			@ApiParam(value = "Department to be updated") @Valid @RequestBody DepartmentInputDto departmentInputDto) 
 			throws DepartmentNotFoundException, DepartmentCodeAlreadyExistsException;
 
 }

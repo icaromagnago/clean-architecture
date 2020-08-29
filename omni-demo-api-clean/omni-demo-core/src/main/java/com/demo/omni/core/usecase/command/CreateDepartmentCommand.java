@@ -3,11 +3,15 @@ package com.demo.omni.core.usecase.command;
 import com.demo.omni.core.entity.Board;
 import com.demo.omni.core.usecase.dto.StateIdDto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class CreateDepartmentCommand {
 	
 	private Integer code;
