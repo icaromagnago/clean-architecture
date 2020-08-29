@@ -1,23 +1,25 @@
-package com.demo.omni.core.entity;
+package com.demo.omni.core.usecase.dto;
+
+import com.demo.omni.core.entity.Board;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 @Builder
-public class Department {
+public class CreatedDepartmentDto {
 	
 	private Integer id;
 	
 	private Integer code;
 	
 	private String name;
-	
+
 	private String local;
 
 	private String city;
-	
+
 	private Board board;
-	
-	private State state;
+
+	private StateIdDto state;
 }

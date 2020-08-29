@@ -1,12 +1,10 @@
 package com.demo.omni.core.entity;
 
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@EqualsAndHashCode
+@Builder
 public class State {
 	
 	private Integer id;
@@ -14,9 +12,4 @@ public class State {
 	private String name;
 	
 	private String uf;
-	
-	public State(Integer id, String name) {
-		this.id = id;
-		this.name = name;
-	}
 }

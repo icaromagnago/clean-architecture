@@ -3,6 +3,9 @@ package com.demo.omni.entrypoint.rest;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -36,5 +39,16 @@ public class BaseResponseDto {
 	public void addMessage(String message) {
 		this.messages.add(message);
 	}
+	
+	public static ResponseEntity<BaseResponseDto> toOkResponse(String message, Object data) {
+		return ResponseEntity.ok(new BaseResponseDto(HttpStatus.OK.getReasonPhrase(),
+				List.of(message), data));		
+	}
+	
+	public static ResponseEntity<BaseResponseDto> toNotFoundResponse(String message) {
+		return ResponseEntity.status(HttpStatus.NOT_FOUND)
+				.body(new BaseResponseDto(HttpStatus.NOT_FOUND.getReasonPhrase(), List.of(message), null));
+			
+	} 
 	
 }

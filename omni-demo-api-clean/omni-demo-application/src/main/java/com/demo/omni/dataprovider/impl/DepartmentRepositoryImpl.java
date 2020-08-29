@@ -3,6 +3,7 @@ package com.demo.omni.dataprovider.impl;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -24,20 +25,21 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 
 	@Override
 	public Department save(Department department) {
-		// TODO Auto-generated method stub
-		return null;
+		var departmentEntity = departmentJpaRepository
+				.save(DepartmentRepositoryMapper.toDatabaseEntity(department));
+
+		return DepartmentRepositoryMapper.toDomainEntity(departmentEntity);
 	}
 
 	@Override
 	public void delete(Integer id) {
-		// TODO Auto-generated method stub
-		
+		departmentJpaRepository.deleteById(id);
 	}
 
 	@Override
-	public Department findById(Integer id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Optional<Department> findById(Integer id) {
+		return departmentJpaRepository.findById(id)
+				.map(DepartmentRepositoryMapper::toDomainEntity);
 	}
 
 	@Override
@@ -47,6 +49,11 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 		return departments.stream()
 				.map(DepartmentRepositoryMapper::toDomainEntity)
 				.collect(toList());
+	}
+
+	@Override
+	public Boolean doesDepartmentCodeExists(Integer code) {
+		return departmentJpaRepository.findByCode(code).isPresent();
 	}
 
 }

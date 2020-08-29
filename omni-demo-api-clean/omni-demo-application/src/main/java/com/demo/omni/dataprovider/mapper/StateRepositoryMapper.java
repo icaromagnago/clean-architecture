@@ -1,24 +1,24 @@
 package com.demo.omni.dataprovider.mapper;
 
-import org.springframework.beans.BeanUtils;
-
 import com.demo.omni.core.entity.State;
 import com.demo.omni.dataprovider.entity.StateEntity;
 
 public class StateRepositoryMapper {
 	
 	public static StateEntity toDatabaseEntity(final State state) {
-		var stateEntity = new StateEntity();
-		BeanUtils.copyProperties(state, stateEntity);
-		
-		return stateEntity;
+		return StateEntity.builder()
+				.id(state.getId())
+				.name(state.getName())
+				.uf(state.getUf())
+				.build();
 	}
 	
 	public static State toDomainEntity(final StateEntity stateEntity) {
-		var state = new State();
-		BeanUtils.copyProperties(stateEntity, state);
-		
-		return state;
+		return State.builder()
+				.id(stateEntity.getId())
+				.name(stateEntity.getName())
+				.uf(stateEntity.getUf())
+				.build();
 	}
 
 }
