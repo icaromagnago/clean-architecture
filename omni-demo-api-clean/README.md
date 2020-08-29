@@ -29,4 +29,41 @@ O projeto é um projeto maven multi-module com dois módulos que representam as 
 - `Swagger` - Documentação da API
 - `Junit e Mockito` - Para testes de unidade
 
+# Executando a aplicação com Docker
+
+- Prerequisitos
+
+	- `Git`
+	- `Java JDK 11`
+	- `Docker`
+	- `Docker Compose`
+	
+Faça o clone do projeto: 
+
+`git clone https://icaromagnago@bitbucket.org/omnifinanceira/java-test-icaro-magnago.git`	
+	
+	
+Acesse a pasta do projeto
+
+`cd java-test-icaro-magnago/omni-demo-api-clean`
+	
+Execute o maven para buildar o projeto
+
+`mvn clean install`
+	
+Execute o build do Dockerfile
+
+`docker build -t omni/omni-demo-api .`
+		
+Executando a aplicação
+
+`docker-compose up`
+	
+A `API` estarará executando na porta `8080`
+
+Acesse `localhost:8080/swagger-ui.html` para vê a documentação swagger.
+
+
+
+
 
