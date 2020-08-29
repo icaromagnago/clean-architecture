@@ -8,6 +8,7 @@ import com.demo.omni.core.usecase.impl.CreateDepartmentImpl;
 import com.demo.omni.core.usecase.impl.FindDepartmentByIdImpl;
 import com.demo.omni.core.usecase.impl.GetAllDepartmentsOrderByCodeImpl;
 import com.demo.omni.core.usecase.impl.RemoveDepartmentImpl;
+import com.demo.omni.core.usecase.impl.UpdateDepartmentImpl;
 import com.demo.omni.dataprovider.impl.DepartmentRepositoryImpl;
 
 @Configuration
@@ -34,5 +35,10 @@ public class DepartmentConfiguration {
 	@Bean
 	public CreateDepartmentImpl createCreateDepartmentUseCase() {
 		return new CreateDepartmentImpl(departmentRepositoryImpl);
+	}
+	
+	@Bean
+	public UpdateDepartmentImpl createUpdateDepartmentUseCase() {
+		return new UpdateDepartmentImpl(departmentRepositoryImpl);
 	}
 }

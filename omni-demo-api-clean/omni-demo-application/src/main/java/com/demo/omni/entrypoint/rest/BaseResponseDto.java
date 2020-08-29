@@ -36,6 +36,11 @@ public class BaseResponseDto {
 		this.messages = messages;
 	}
 	
+	public BaseResponseDto(String status, String message) {
+		this.status = status;
+		this.messages = List.of(message);
+	}
+	
 	public void addMessage(String message) {
 		this.messages.add(message);
 	}
@@ -45,10 +50,16 @@ public class BaseResponseDto {
 				List.of(message), data));		
 	}
 	
+	public static ResponseEntity<BaseResponseDto> toCreatedResponse(String message, Object data) {
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(new BaseResponseDto(HttpStatus.CREATED.getReasonPhrase(), 
+						List.of(message), data));
+			
+	}
+	
 	public static ResponseEntity<BaseResponseDto> toNotFoundResponse(String message) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND)
 				.body(new BaseResponseDto(HttpStatus.NOT_FOUND.getReasonPhrase(), List.of(message), null));
 			
 	} 
-	
 }

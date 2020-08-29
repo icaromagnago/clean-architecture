@@ -56,4 +56,10 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
 		return departmentJpaRepository.findByCode(code).isPresent();
 	}
 
+	@Override
+	public Optional<Department> findByCode(Integer code) {
+		return departmentJpaRepository.findByCode(code)
+				.map(DepartmentRepositoryMapper::toDomainEntity);
+	}
+
 }

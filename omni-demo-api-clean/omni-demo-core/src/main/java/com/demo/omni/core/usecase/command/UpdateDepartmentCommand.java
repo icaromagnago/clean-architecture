@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CreateDepartmentCommand {
+public class UpdateDepartmentCommand {
 	
 	private Integer code;
 	

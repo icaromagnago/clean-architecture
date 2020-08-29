@@ -12,8 +12,9 @@ export const FormContainer = styled.div`
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   }
 
-  h3 {
-    margin-top: 15px;
+  button {
+    width: 100px;
+    align-self: flex-end;
   }
 `;
 
@@ -44,19 +45,12 @@ export const BoardContainer = styled.div`
   }
 `;
 
-export const SubmitButton = styled.button.attrs((props) => ({
-  type: 'submit',
-}))`
-  background: #007bff;
-  border: 0;
-  padding: 10px 15px;
-  border-radius: 4px;
-  margin-top: 15px;
-  width: 100px;
-  color: #fff;
-
+export const ButtonContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
   align-self: flex-end;
+  margin-top: 10px;
+
+  button {
+    margin-left: 10px;
+  }
 `;

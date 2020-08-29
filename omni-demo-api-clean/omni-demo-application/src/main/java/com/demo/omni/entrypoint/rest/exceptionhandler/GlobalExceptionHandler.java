@@ -3,6 +3,7 @@ package com.demo.omni.entrypoint.rest.exceptionhandler;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.TypeMismatchException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.demo.omni.core.usecase.exception.DepartmentCodeAlreadyExists;
+import com.demo.omni.core.usecase.exception.DepartmentCodeAlreadyExistsException;
+import com.demo.omni.core.usecase.exception.DepartmentNotFoundException;
 import com.demo.omni.entrypoint.rest.BaseResponseDto;
 
 @ControllerAdvice
@@ -45,18 +47,36 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler({ EmptyResultDataAccessException.class })
 	public ResponseEntity<Object> handleEmptyResultDataAccessException(RuntimeException ex,  WebRequest request) {
 		
-		BaseResponseDto baseResponseDto = new BaseResponseDto(HttpStatus.NOT_FOUND.getReasonPhrase(), List.of(ex.getMessage()));
+		BaseResponseDto baseResponseDto = new BaseResponseDto(HttpStatus.NOT_FOUND.getReasonPhrase(), ex.getMessage());
 		
 		return handleExceptionInternal(ex, baseResponseDto, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 	
-	@ExceptionHandler({ DepartmentCodeAlreadyExists.class })
-	public ResponseEntity<Object> handleDepartmentCodeAlreadyExists(DepartmentCodeAlreadyExists ex,  WebRequest request) {
+	@ExceptionHandler({ DepartmentCodeAlreadyExistsException.class })
+	public ResponseEntity<Object> handleDepartmentCodeAlreadyExistsException(DepartmentCodeAlreadyExistsException ex,  WebRequest request) {
 		
 		BaseResponseDto baseResponseDto = new BaseResponseDto(HttpStatus.UNPROCESSABLE_ENTITY.getReasonPhrase(), 
 				List.of(ex.getMessage()));
 		
 		return handleExceptionInternal(ex, baseResponseDto, new HttpHeaders(), HttpStatus.UNPROCESSABLE_ENTITY, request);
+	}
+	
+	@ExceptionHandler({ DepartmentNotFoundException.class })
+	public ResponseEntity<Object> handleDepartmentNotFoundException(DepartmentNotFoundException ex,  WebRequest request) {
+		
+		BaseResponseDto baseResponseDto = new BaseResponseDto(HttpStatus.NOT_FOUND.getReasonPhrase(), 
+				ex.getMessage());
+		
+		return handleExceptionInternal(ex, baseResponseDto, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+	
+	@Override
+	protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+		
+		BaseResponseDto baseResponseDto = new BaseResponseDto(status.getReasonPhrase(), ex.getMessage());
+		
+		return super.handleExceptionInternal(ex, baseResponseDto, headers, HttpStatus.BAD_REQUEST, request);
 	}
 	
 }

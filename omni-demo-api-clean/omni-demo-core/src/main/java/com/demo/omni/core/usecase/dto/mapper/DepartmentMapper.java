@@ -5,7 +5,7 @@ import static java.util.stream.Collectors.toList;
 import java.util.List;
 
 import com.demo.omni.core.entity.Department;
-import com.demo.omni.core.usecase.dto.CreatedDepartmentDto;
+import com.demo.omni.core.usecase.dto.DepartmentDto;
 import com.demo.omni.core.usecase.dto.FindDepartmentDto;
 import com.demo.omni.core.usecase.dto.ListDepartmentDto;
 import com.demo.omni.core.usecase.dto.StateIdDto;
@@ -30,8 +30,8 @@ public class DepartmentMapper {
 				.build();
 	}
 	
-	public static CreatedDepartmentDto toCreatedDepartmentDto(Department department) {
-		return CreatedDepartmentDto.builder()
+	public static DepartmentDto toDepartmentDto(Department department) {
+		return DepartmentDto.builder()
 			.id(department.getId())
 			.code(department.getCode())
 			.name(department.getName())

@@ -16,4 +16,6 @@ public interface DepartmentRepository {
 	public List<Department> findAllOrderByCode();
 	
 	public Boolean doesDepartmentCodeExists(Integer code);
+	
+	public Optional<Department> findByCode(Integer code);
 }

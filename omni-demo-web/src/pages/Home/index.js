@@ -17,7 +17,6 @@ import {
   FormContainer,
   InputContainer,
   BoardContainer,
-  SubmitButton,
   TableContainer,
 } from './styles';
 
@@ -45,7 +44,8 @@ function Home() {
   useEffect(() => {
     async function loadStates() {
       const response = await api.get('states');
-      setStates((s) => [...s, ...response.data.result]);
+
+      setStates(response.data.result);
     }
 
     async function loadDepartments() {
@@ -53,8 +53,7 @@ function Home() {
       setDepartments(responseDepartments.data.result);
     }
 
-    loadStates();
-    loadDepartments();
+    Promise.all([loadStates(), loadDepartments()]);
   }, []);
 
   const handleClose = () => {
@@ -108,16 +107,19 @@ function Home() {
                 newDepartments.sort((dep1, dep2) => dep1.code - dep2.code);
 
                 setDepartments(newDepartments);
+                toast.success('Departamento cadastrado com sucesso!');
               }
 
-              setSubmitting(false);
-
-              toast.success('Departamento cadastrado com sucesso!');
+              if (response.status === 422) {
+                toast.error(response.data.messages[0]);
+              }
 
               resetForm({ values: '' });
-              setIsLoading(false);
             } catch (err) {
+              console.log(err);
+            } finally {
               setIsLoading(false);
+              setSubmitting(false);
             }
           }}
         >
@@ -147,6 +149,7 @@ function Home() {
                 <InputRadio name="board" label="Recuperação" value="RECOVERY" />
                 <InputRadio name="board" label="Negócios" value="BUSINESS" />
               </BoardContainer>
+
               <Button size="sm" type="submit" disabled={isLoading}>
                 {isLoading ? 'Gravando...' : 'Gravar'}
               </Button>

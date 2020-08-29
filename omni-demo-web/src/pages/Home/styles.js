@@ -15,6 +15,7 @@ export const FormContainer = styled.div`
   button {
     width: 100px;
     align-self: flex-end;
+    margin-top: 10px;
   }
 `;
 

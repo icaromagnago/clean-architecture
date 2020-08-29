@@ -7,7 +7,7 @@ import lombok.Value;
 
 @Value
 @Builder
-public class CreatedDepartmentDto {
+public class UpdatedDepartmentDto {
 	
 	private Integer id;
 	

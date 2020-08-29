@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Formik, Form } from 'formik';
+import { Button } from 'react-bootstrap';
 import * as Yup from 'yup';
 
 import api from '../../services/api';
@@ -15,7 +16,7 @@ import {
   FormContainer,
   InputContainer,
   BoardContainer,
-  SubmitButton,
+  ButtonContainer,
 } from './styles';
 
 const schema = Yup.object().shape({
@@ -33,6 +34,7 @@ const schema = Yup.object().shape({
 function Edit({ match }) {
   const history = useHistory();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [states, setStates] = useState([]);
   const [department, setDepartment] = useState({
     code: '',
@@ -56,9 +58,12 @@ function Edit({ match }) {
       setDepartment(response.data.result);
     }
 
-    loadStates();
-    loadDepartment();
+    Promise.all([loadDepartment(), loadStates()]);
   }, []);
+
+  function handleBack() {
+    history.push('/');
+  }
 
   return (
     <Container>
@@ -68,17 +73,24 @@ function Edit({ match }) {
         validationSchema={schema}
         onSubmit={async (values, { setSubmitting }) => {
           try {
+            setIsLoading(true);
             const { id } = match.params;
 
             const response = await api.put(`departments/${id}`, values);
 
             if (response.status === 200) {
-              setSubmitting(false);
               toast.success('Departamento atualizado com sucesso!');
               history.push('/');
             }
+
+            if (response.status === 422) {
+              toast.error(response.data.messages[0]);
+            }
           } catch (err) {
             console.log(err);
+          } finally {
+            setIsLoading(false);
+            setSubmitting(false);
           }
         }}
       >
@@ -99,14 +111,23 @@ function Edit({ match }) {
               </Select>
             </InputContainer>
             <hr />
-            <h3>Diretoria</h3>
+            <h6>
+              <strong>Diretoria</strong>
+            </h6>
 
             <BoardContainer>
               <InputRadio name="board" label="E.I.S" value="EIS" />
               <InputRadio name="board" label="Recuperação" value="RECOVERY" />
               <InputRadio name="board" label="Negócios" value="BUSINESS" />
             </BoardContainer>
-            <SubmitButton>Gravar</SubmitButton>
+            <ButtonContainer>
+              <Button size="sm" variant="secondary" onClick={handleBack}>
+                Voltar
+              </Button>
+              <Button size="sm" type="submit" disabled={isLoading}>
+                {isLoading ? 'Gravando...' : 'Gravar'}
+              </Button>
+            </ButtonContainer>
           </FormContainer>
         </Form>
       </Formik>

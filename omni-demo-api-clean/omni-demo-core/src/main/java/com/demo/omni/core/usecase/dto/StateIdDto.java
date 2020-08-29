@@ -1,8 +1,12 @@
 package com.demo.omni.core.usecase.dto;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Value
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class StateIdDto {
 	
 	private Integer id;
