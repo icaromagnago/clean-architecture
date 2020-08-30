@@ -18,7 +18,7 @@ public class CreateDepartmentImpl implements CreateDepartment {
 	@Override
 	public DepartmentDto execute(CreateDepartmentCommand command) throws DepartmentCodeAlreadyExistsException {
 		if (departmentRepository.doesDepartmentCodeExists(command.getCode())) {
-			throw new DepartmentCodeAlreadyExistsException(String.format("Department code %s already exists!", command.getCode()));
+			throw new DepartmentCodeAlreadyExistsException(String.format("Já existe um departamento com o código %s", command.getCode()));
 		}
 		
 		var department = DepartmentCommandMapper.toDepartment(command);

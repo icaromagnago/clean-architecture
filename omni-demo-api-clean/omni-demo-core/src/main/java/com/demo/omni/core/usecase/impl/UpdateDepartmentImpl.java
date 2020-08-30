@@ -53,7 +53,7 @@ public class UpdateDepartmentImpl implements UpdateDepartment {
 					.isPresent();
 			
 			if (!isTheSameDepartment) {
-				throw new DepartmentCodeAlreadyExistsException(String.format("Department code %s already exists!", command.getCode()));
+				throw new DepartmentCodeAlreadyExistsException(String.format("Já existe um departamento com o código %s", command.getCode()));
 			}
 		}
 	}
