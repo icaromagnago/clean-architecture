@@ -16,6 +16,8 @@
 
 ### Exclusão de um departamento
 ![](img/exclusao.png)
+
+### Validação de regra de negócio
 ![](img/validacao_rn.png)
 
 ## Tecnologias
