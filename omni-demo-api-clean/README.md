@@ -9,6 +9,9 @@ A arquitetura utilizada nesse projeto foi baseada na `Clean Architecture` porém
 - `core` - Representa o domínio do negócio, toda a lógica e regras de negócios ficam aqui. Essa camada fica totalmente isolada de frameworks e tecnologias utilizadas pela aplicação
 - `application` - Nessa camada está tudo aquilo que não faz parte do domínio. API's Rest, frameworks, acesso a banco de dados e etc.
 
+### Modelo simplificado
+![](documentacao/helpdev-clean-arch.png)
+
 A implementação dessa arquitetura foi baseada em dois principais artigos: 
 
 * [Descomplicando a Clean Architecture](https://medium.com/luizalabs/descomplicando-a-clean-architecture-cf4dfc4a1ac6)
