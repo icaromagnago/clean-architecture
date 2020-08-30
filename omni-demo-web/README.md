@@ -2,10 +2,19 @@
 
 ## Screenshots
 
+### Cadastro e listagem
 ![](img/cadastro1.png)
+
+### Validação dos inputs
 ![](img/cadastro_obg.png)
+
+### Cadastro realizado com sucesso
 ![](img/cadastro_realizado.png)
+
+### Tela de edição
 ![](img/edicao.png)
+
+### Exclusão de um departamento
 ![](img/exclusao.png)
 ![](img/validacao_rn.png)
 
