@@ -18,7 +18,7 @@
 ![](img/exclusao.png)
 
 ### Validação de regra de negócio
-![](img/validacao_rn.png)
+![](img/validacao_rn_1.png)
 
 ## Tecnologias
 
