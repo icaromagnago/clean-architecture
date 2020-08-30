@@ -108,13 +108,12 @@ function Home() {
 
                 setDepartments(newDepartments);
                 toast.success('Departamento cadastrado com sucesso!');
+                resetForm({ values: '' });
               }
 
               if (response.status === 422) {
                 toast.error(response.data.messages[0]);
               }
-
-              resetForm({ values: '' });
             } catch (err) {
               console.log(err);
             } finally {
